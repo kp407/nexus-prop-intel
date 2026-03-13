@@ -1,42 +1,41 @@
-import json
-
 SIGNAL_KEYWORDS = [
     "office", "lease", "expand", "expansion", "hire", "hiring",
     "headquarter", "hq", "relocate", "new office", "workspace",
     "coworking", "seat", "sqft", "sq ft", "floor", "tower",
     "campus", "facility", "warehouse", "logistics", "park",
-    "funding", "raises", "series", "investment", "backed",
-    "unicorn", "startup", "company", "employees", "staff",
-    "headcount", "team", "opens", "launch", "setup"
+    "funding", "raises", "series a", "series b", "series c",
+    "investment", "backed", "unicorn", "valuation", "ipo",
+    "employees", "staff", "headcount", "team size", "workforce",
+    "opens", "launch", "setup", "inaugurate", "new branch",
+    "data center", "r&d center", "innovation hub", "tech park"
 ]
 
-LOCATION_KEYWORDS = [
-    "mumbai", "navi mumbai", "bkc", "bandra kurla", "lower parel",
-    "andheri", "powai", "thane", "worli", "nariman point", "goregaon",
-    "malad", "vikhroli", "india", "indian"
-]
+SPACE_KEYWORDS = ["office", "warehouse", "coworking", "campus", "facility", 
+                  "data center", "tech park", "r&d center"]
 
-SPACE_KEYWORDS = ["office", "warehouse", "coworking", "campus", "facility"]
+INDIA_LOCATIONS = [
+    "mumbai", "navi mumbai", "thane", "pune", "delhi", "ncr", "gurugram",
+    "gurgaon", "noida", "bengaluru", "bangalore", "hyderabad", "chennai",
+    "kolkata", "ahmedabad", "surat", "jaipur", "lucknow", "india", "indian",
+    "bkc", "lower parel", "andheri", "powai", "whitefield", "hsr layout",
+    "koramangala", "cyberabad", "hitec city", "gachibowli"
+]
 
 def classify_signal(article: dict) -> dict:
     title = (article.get('title') or '').lower()
     summary = (article.get('summary') or '').lower()
     text = title + ' ' + summary
 
-    location_hit = any(loc in text for loc in LOCATION_KEYWORDS)
     signal_hits = [kw for kw in SIGNAL_KEYWORDS if kw in text]
 
     if not signal_hits:
         return None
 
+    location_hit = any(loc in text for loc in INDIA_LOCATIONS)
+
     score = len(signal_hits) * 10
     if location_hit:
-        score += 30
-    if any(loc in text for loc in ["mumbai", "bkc", "lower parel", "andheri", "powai", "thane"]):
         score += 20
-
-    if score < 10:
-        return None
 
     return {
         "signal_type": signal_hits[0].upper(),
