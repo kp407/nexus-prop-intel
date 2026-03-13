@@ -50,11 +50,12 @@ def classify_signal(article: dict) -> dict:
         return None
 
     return {
-        "signal_type": signal_hits[0] if signal_hits else "general",
-        "score": min(score, 100),
-        "priority": "HIGH" if score >= 60 else "MEDIUM" if score >= 30 else "LOW",
-        "keywords_matched": signal_hits[:5],
+        "signal_type": signal_hits[0].upper() if signal_hits else "GENERAL",
+        "confidence": min(score, 100),
+        "space_type": next((kw for kw in signal_hits if kw in ["office","warehouse","coworking","campus"]), None),
+        "matched_phrases": signal_hits[:5],
         "location_hit": location_hit
+    }
 
 
     }
