@@ -435,7 +435,7 @@
   async function fetchSignals() {
     try {
       const res = await fetch(
-        `${SUPABASE_URL}/rest/v1/signals?select=*,companies(company_name)&order=created_at.desc&limit=200`,
+        `${SUPABASE_URL}/rest/v1/signals?select=*,companies(company_name)&order=signal_id.desc&limit=200`,
         {
           headers: {
             'apikey': SUPABASE_ANON_KEY,
