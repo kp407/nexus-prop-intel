@@ -69,10 +69,23 @@ class BSECrawler(BaseCrawler):
 
                 # Quick CRE keyword filter on headline
                 cre_keywords = [
-                    "office", "facility", "campus", "lease", "space", "sq ft",
-                    "expansion", "relocation", "headquarters", "hq", "centre",
-                    "new premises", "shift", "capex", "plant", "new location",
+                    "new office", "office space", "office premises", "office campus",
+                    "sq ft", "sqft", "square feet", "lease", "leased", "leasing",
+                    "new facility", "new campus", "new headquarters", "new hq",
+                    "relocation", "relocated", "new premises", "shifting office",
+                    "commercial property", "real estate", "additional space",
+                    "expand office", "office expansion", "new location office",
                 ]
+                # Reject BSE filings that are clearly NOT CRE
+                noise_headlines = [
+                    "appointment", "resignation", "cfо", "cfo", "ceo", "coo",
+                    "esop", "allotment", "dividend", "agm", "egm", "auditor",
+                    "compliance officer", "book closure", "record date",
+                    "financial results", "quarterly results", "investor meet",
+                    "analyst meet", "credit rating", "shareholding",
+                ]
+                if any(nk in headline.lower() for nk in noise_headlines):
+                    continue
                 if not any(kw in headline.lower() for kw in cre_keywords):
                     continue
 
@@ -104,7 +117,7 @@ class BSECrawler(BaseCrawler):
 
     def _extract_pdf(self, pdf_url: str) -> str:
         try:
-            resp = self.session.get(pdf_url, timeout=20)
+            resp = self.session.get(pdf_url, timeout=20, verify=False)
             resp.raise_for_status()
             with pdfplumber.open(BytesIO(resp.content)) as pdf:
                 return "\n".join(page.extract_text() or "" for page in pdf.pages[:5])
@@ -329,10 +342,14 @@ class FilingPDFCrawler(BaseCrawler):
                 "capex", "infrastructure", "real estate", "property",
             ]
 
-            for item in data.get("data", []):
-                subject = item.get("subject", "")
-                company = item.get("company", "")
-                attachment = item.get("attchmntFile", "")
+            # NSE API returns list directly or wrapped in dict
+            items = data if isinstance(data, list) else data.get("data", [])
+            for item in items:
+                if not isinstance(item, dict):
+                    continue
+                subject = item.get("subject", item.get("desc", ""))
+                company = item.get("company", item.get("symbol", ""))
+                attachment = item.get("attchmntFile", item.get("filename", ""))
 
                 if not any(kw in subject.lower() for kw in cre_keywords):
                     continue
