@@ -3,68 +3,560 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NEXUS ASIA PROP INTEL</title>
-  <link rel="stylesheet" href="assets/style.css">
+  <title>NEXUS PROP INTEL</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;1,9..144,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0a0a0f;
+      --surface: #111118;
+      --border: #1e1e2e;
+      --accent: #e8ff47;
+      --accent2: #47ffe8;
+      --text: #f0f0f0;
+      --muted: #666680;
+      --red: #ff4757;
+      --green: #2ed573;
+      --orange: #ffa502;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Mono', monospace;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Grid background */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: 
+        linear-gradient(rgba(232,255,71,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(232,255,71,0.03) 1px, transparent 1px);
+      background-size: 48px 48px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(10,10,15,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 32px;
+      height: 56px;
+    }
+
+    .logo {
+      font-family: 'Fraunces', serif;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: 0.05em;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .logo::before {
+      content: '◈';
+      font-size: 20px;
+    }
+
+    .nav-status {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .pulse {
+      width: 6px;
+      height: 6px;
+      background: var(--green);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.8); }
+    }
+
+    main {
+      position: relative;
+      z-index: 1;
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 40px 32px;
+    }
+
+    .header {
+      margin-bottom: 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+
+    .header h1 {
+      font-family: 'Fraunces', serif;
+      font-size: 42px;
+      font-weight: 300;
+      line-height: 1.1;
+      color: var(--text);
+    }
+
+    .header h1 em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .header p {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 8px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .last-updated {
+      font-size: 11px;
+      color: var(--muted);
+      text-align: right;
+    }
+
+    /* Stats Row */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      margin-bottom: 40px;
+    }
+
+    .stat {
+      background: var(--surface);
+      padding: 24px 28px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stat::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: var(--accent);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.6s ease;
+    }
+
+    .stat.loaded::after { transform: scaleX(1); }
+
+    .stat-value {
+      font-family: 'Fraunces', serif;
+      font-size: 40px;
+      font-weight: 700;
+      color: var(--accent);
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    /* Filters */
+    .filters {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+
+    .filter-btn {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      padding: 6px 14px;
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .filter-btn:hover, .filter-btn.active {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: rgba(232,255,71,0.05);
+    }
+
+    /* Signals Table */
+    .table-wrap {
+      border: 1px solid var(--border);
+      overflow: hidden;
+    }
+
+    .table-header {
+      display: grid;
+      grid-template-columns: 160px 1fr 120px 100px 90px;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 20px;
+      font-size: 10px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      gap: 16px;
+    }
+
+    .signal-row {
+      display: grid;
+      grid-template-columns: 160px 1fr 120px 100px 90px;
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border);
+      gap: 16px;
+      align-items: start;
+      cursor: pointer;
+      transition: background 0.15s;
+      animation: fadeIn 0.3s ease forwards;
+      opacity: 0;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .signal-row:hover { background: rgba(255,255,255,0.02); }
+    .signal-row:last-child { border-bottom: none; }
+
+    .signal-type-badge {
+      display: inline-block;
+      padding: 3px 8px;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      border: 1px solid;
+    }
+
+    .badge-OFFICE, .badge-WORKSPACE, .badge-COWORKING { color: var(--accent2); border-color: rgba(71,255,232,0.3); background: rgba(71,255,232,0.05); }
+    .badge-FUNDING, .badge-INVESTMENT, .badge-RAISES, .badge-BACKED { color: var(--green); border-color: rgba(46,213,115,0.3); background: rgba(46,213,115,0.05); }
+    .badge-HIRING, .badge-EMPLOYEES, .badge-HEADCOUNT, .badge-STAFF { color: var(--orange); border-color: rgba(255,165,2,0.3); background: rgba(255,165,2,0.05); }
+    .badge-LEASE, .badge-EXPAND, .badge-EXPANSION, .badge-RELOCATE { color: var(--accent); border-color: rgba(232,255,71,0.3); background: rgba(232,255,71,0.05); }
+    .badge-default { color: var(--muted); border-color: var(--border); }
+
+    .company-name {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+
+    .signal-summary {
+      font-size: 11px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .signal-location {
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .confidence-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .bar-bg {
+      flex: 1;
+      height: 3px;
+      background: var(--border);
+    }
+
+    .bar-fill {
+      height: 100%;
+      background: var(--accent);
+      transition: width 0.8s ease;
+    }
+
+    .confidence-val {
+      font-size: 10px;
+      color: var(--muted);
+      min-width: 28px;
+    }
+
+    .source-link {
+      font-size: 10px;
+      color: var(--muted);
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+      transition: all 0.2s;
+      word-break: break-all;
+    }
+
+    .source-link:hover { color: var(--accent); border-color: var(--accent); }
+
+    /* Loading */
+    .loading {
+      padding: 80px 20px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 12px;
+      letter-spacing: 0.1em;
+    }
+
+    .loading::after {
+      content: '...';
+      animation: dots 1.5s infinite;
+    }
+
+    @keyframes dots {
+      0%, 20% { content: '.'; }
+      40% { content: '..'; }
+      60%, 100% { content: '...'; }
+    }
+
+    .empty {
+      padding: 60px 20px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .error-msg {
+      padding: 20px;
+      background: rgba(255,71,87,0.05);
+      border: 1px solid rgba(255,71,87,0.2);
+      color: var(--red);
+      font-size: 12px;
+      margin-bottom: 24px;
+    }
+
+    @media (max-width: 768px) {
+      main { padding: 24px 16px; }
+      .stats { grid-template-columns: repeat(2, 1fr); }
+      .table-header { display: none; }
+      .signal-row { grid-template-columns: 1fr; }
+    }
+  </style>
 </head>
 <body>
+
 <nav>
-  <span class="logo">&#x2B21; NEXUS PROP INTEL</span>
-  <a href="index.html" class="active">Dashboard</a>
-  <a href="search.html">Search</a>
-  <a href="feed.html">Signal Feed</a>
+  <div class="logo">NEXUS PROP INTEL</div>
+  <div class="nav-status">
+    <div class="pulse"></div>
+    <span>LIVE FEED</span>
+  </div>
 </nav>
-<div class="container" style="padding-top:32px">
-  <h1 style="font-size:22px;font-weight:700;margin-bottom:6px">Intelligence Dashboard</h1>
-  <p style="color:var(--text-secondary);font-size:14px;margin-bottom:24px">
-    Live demand signals &middot; Mumbai &amp; Navi Mumbai CRE
-  </p>
-  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:28px">
-    <div class="card" style="text-align:center">
-      <div style="font-size:28px;font-weight:700;color:var(--accent)" id="stat-total">&mdash;</div>
-      <div style="font-size:13px;color:var(--text-secondary);margin-top:4px">Total Signals</div>
+
+<main>
+  <div class="header">
+    <div>
+      <h1>Demand Signal<br><em>Intelligence</em></h1>
+      <p>Pan-India CRE · Commercial Real Estate Tracker</p>
     </div>
-    <div class="card" style="text-align:center">
-      <div style="font-size:28px;font-weight:700;color:#34c759" id="stat-high">&mdash;</div>
-      <div style="font-size:13px;color:var(--text-secondary);margin-top:4px">High Value Leads</div>
+    <div class="last-updated" id="last-updated">Fetching data...</div>
+  </div>
+
+  <div class="stats">
+    <div class="stat" id="stat-total">
+      <div class="stat-value" id="val-total">—</div>
+      <div class="stat-label">Total Signals</div>
     </div>
-    <div class="card" style="text-align:center">
-      <div style="font-size:28px;font-weight:700;color:#ff9f0a" id="stat-companies">&mdash;</div>
-      <div style="font-size:13px;color:var(--text-secondary);margin-top:4px">Companies Tracked</div>
+    <div class="stat" id="stat-companies">
+      <div class="stat-value" id="val-companies">—</div>
+      <div class="stat-label">Companies</div>
+    </div>
+    <div class="stat" id="stat-high">
+      <div class="stat-value" id="val-high">—</div>
+      <div class="stat-label">High Confidence</div>
+    </div>
+    <div class="stat" id="stat-types">
+      <div class="stat-value" id="val-types">—</div>
+      <div class="stat-label">Signal Types</div>
     </div>
   </div>
-  <h2 style="font-size:16px;font-weight:600;margin-bottom:14px">&#128308; High Value Leads</h2>
-  <div class="grid" id="high-leads-grid">
-    <p style="color:var(--text-secondary);font-size:14px">Loading...</p>
+
+  <div class="filters" id="filters">
+    <button class="filter-btn active" data-filter="ALL">All</button>
+    <button class="filter-btn" data-filter="OFFICE">Office</button>
+    <button class="filter-btn" data-filter="FUNDING">Funding</button>
+    <button class="filter-btn" data-filter="HIRING">Hiring</button>
+    <button class="filter-btn" data-filter="LEASE">Lease</button>
+    <button class="filter-btn" data-filter="EXPAND">Expand</button>
   </div>
-</div>
-<script src="assets/app.js"></script>
+
+  <div id="error-container"></div>
+
+  <div class="table-wrap">
+    <div class="table-header">
+      <div>Signal Type</div>
+      <div>Company · Summary</div>
+      <div>Location</div>
+      <div>Confidence</div>
+      <div>Source</div>
+    </div>
+    <div id="signals-list">
+      <div class="loading">Fetching signals</div>
+    </div>
+  </div>
+</main>
+
 <script>
-  async function loadDashboard() {
-    const res = await fetch(window.API_BASE + "/feed?priority=HIGH&limit=9");
-    const data = await res.json();
-    const grid = document.getElementById("high-leads-grid");
-    grid.innerHTML = "";
-    if (!data.signals.length) {
-      grid.innerHTML = '<p style="color:var(--text-secondary)">No signals yet. Run the crawler.</p>';
+  // ── CONFIG ──────────────────────────────────────────────
+  const SUPABASE_URL = 'https://wgmosxqlboihksdhbntx.supabase.co';
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndnbW9zeHFsYm9paGtzZGhibnR4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMzMzAyMTQsImV4cCI6MjA4ODkwNjIxNH0.hYXbmjsEqvz0iu89ftZCxUl2FqU7VrJNHpx5ynHYgCo'; // Replace with your anon key
+  // ────────────────────────────────────────────────────────
+
+  let allSignals = [];
+  let activeFilter = 'ALL';
+
+  async function fetchSignals() {
+    try {
+      const res = await fetch(
+        `${SUPABASE_URL}/rest/v1/signals?select=*,companies(company_name)&order=created_at.desc&limit=200`,
+        {
+          headers: {
+            'apikey': SUPABASE_ANON_KEY,
+            'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+          }
+        }
+      );
+
+      if (!res.ok) throw new Error(`HTTP ${res.status}: ${await res.text()}`);
+      return await res.json();
+
+    } catch (err) {
+      document.getElementById('error-container').innerHTML =
+        `<div class="error-msg">⚠ Could not fetch data: ${err.message}<br>Make sure SUPABASE_ANON_KEY is set and RLS is disabled.</div>`;
+      return [];
+    }
+  }
+
+  function getBadgeClass(type) {
+    const t = (type || '').toUpperCase();
+    const map = {
+      'OFFICE': 'OFFICE', 'WORKSPACE': 'OFFICE', 'COWORKING': 'OFFICE',
+      'FUNDING': 'FUNDING', 'INVESTMENT': 'FUNDING', 'RAISES': 'FUNDING', 'BACKED': 'FUNDING',
+      'HIRING': 'HIRING', 'EMPLOYEES': 'HIRING', 'HEADCOUNT': 'HIRING', 'STAFF': 'HIRING',
+      'LEASE': 'LEASE', 'EXPAND': 'LEASE', 'EXPANSION': 'LEASE', 'RELOCATE': 'LEASE'
+    };
+    return 'badge-' + (map[t] || 'default');
+  }
+
+  function renderSignals(signals) {
+    const list = document.getElementById('signals-list');
+    if (!signals.length) {
+      list.innerHTML = '<div class="empty">No signals match this filter.</div>';
       return;
     }
-    data.signals.forEach(sig => {
-      const card = document.createElement("div");
-      card.className = "card";
-      card.style.cursor = "pointer";
-      card.onclick = () => location.href = "dossier.html?id=" + sig.company_id;
-      card.innerHTML = "<div class='signal-type'>" + sig.signal_type.replace(/_/g,' ') + "</div>" +
-        "<div style='font-size:15px;font-weight:600;margin:6px 0'>" + (sig.companies?.company_name || 'Unknown') + "</div>" +
-        "<div style='font-size:13px;color:var(--text-secondary);margin-bottom:10px'>&#128205; " + (sig.location || 'Mumbai') + "</div>" +
-        "<p style='font-size:13px;line-height:1.5;color:#333;margin-bottom:12px'>" + (sig.summary || '').substring(0,150) + "...</p>" +
-        "<a href='" + sig.source_url + "' target='_blank' style='font-size:12px;color:var(--accent);text-decoration:none'>View Source &rarr;</a>";
-      grid.appendChild(card);
-    });
-    document.getElementById("stat-total").textContent = data.signals.length;
-    document.getElementById("stat-high").textContent = data.signals.filter(s => s.confidence_score > 60).length;
-    document.getElementById("stat-companies").textContent = new Set(data.signals.map(s => s.company_id)).size;
+
+    list.innerHTML = signals.map((s, i) => `
+      <div class="signal-row" style="animation-delay:${i * 30}ms"
+           onclick="window.open('${s.source_url || '#'}', '_blank')">
+        <div>
+          <span class="signal-type-badge ${getBadgeClass(s.signal_type)}">
+            ${(s.signal_type || 'SIGNAL').substring(0, 12)}
+          </span>
+        </div>
+        <div>
+          <div class="company-name">
+            ${s.companies?.company_name || 'Unknown Company'}
+          </div>
+          <div class="signal-summary">
+            ${(s.summary || 'No summary available').substring(0, 180)}
+          </div>
+        </div>
+        <div class="signal-location">
+          ${s.location ? '◎ ' + s.location.substring(0, 20) : '◎ India'}
+        </div>
+        <div>
+          <div class="confidence-bar">
+            <div class="bar-bg">
+              <div class="bar-fill" style="width:${s.confidence_score || 0}%"></div>
+            </div>
+            <span class="confidence-val">${s.confidence_score || 0}</span>
+          </div>
+        </div>
+        <div>
+          ${s.source_url
+            ? `<a class="source-link" href="${s.source_url}" target="_blank" onclick="event.stopPropagation()">
+                ${new URL(s.source_url).hostname.replace('www.','').substring(0,18)}
+               </a>`
+            : '<span class="source-link">—</span>'
+          }
+        </div>
+      </div>
+    `).join('');
+
+    // Animate stat bars
+    document.querySelectorAll('.stat').forEach(el => el.classList.add('loaded'));
   }
-  loadDashboard();
+
+  function updateStats(signals) {
+    document.getElementById('val-total').textContent = signals.length;
+    document.getElementById('val-companies').textContent =
+      new Set(signals.map(s => s.company_id)).size;
+    document.getElementById('val-high').textContent =
+      signals.filter(s => (s.confidence_score || 0) >= 60).length;
+    document.getElementById('val-types').textContent =
+      new Set(signals.map(s => s.signal_type)).size;
+
+    const now = new Date();
+    document.getElementById('last-updated').textContent =
+      `Updated ${now.toLocaleTimeString('en-IN', {hour:'2-digit', minute:'2-digit'})}`;
+  }
+
+  function applyFilter(filter) {
+    activeFilter = filter;
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.filter === filter);
+    });
+    const filtered = filter === 'ALL'
+      ? allSignals
+      : allSignals.filter(s => (s.signal_type || '').toUpperCase().includes(filter));
+    renderSignals(filtered);
+  }
+
+  document.getElementById('filters').addEventListener('click', e => {
+    if (e.target.classList.contains('filter-btn')) {
+      applyFilter(e.target.dataset.filter);
+    }
+  });
+
+  async function init() {
+    allSignals = await fetchSignals();
+    if (allSignals.length) {
+      updateStats(allSignals);
+      renderSignals(allSignals);
+    } else {
+      document.getElementById('signals-list').innerHTML =
+        '<div class="empty">No signals yet — run the crawler first.</div>';
+    }
+  }
+
+  init();
 </script>
 </body>
 </html>
