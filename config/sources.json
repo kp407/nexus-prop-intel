@@ -1,0 +1,26 @@
+{
+   "rss_feeds": [
+    "https://economictimes.indiatimes.com/industry/services/property-/-cstruction/rssfeeds/13358259.cms",
+    "https://www.business-standard.com/rss/companies-101.rss",
+    "https://inc42.com/feed/",
+    "https://timesofindia.indiatimes.com/business/india-business/rssfeedstopstories.cms",
+    "https://www.livemint.com/rss/companies",
+    "https://www.moneycontrol.com/rss/latestnews.xml"
+  ],
+  "news_portals": [
+    "https://www.99acres.com/real-estate-insights/",
+    "https://housing.com/news/",
+    "https://www.magicbricks.com/blog/",
+    "https://www.jllapsites.com/research/",
+    "https://www.knightfrank.co.in/research"
+  ],
+  "job_boards": [
+    "https://www.naukri.com/jobs-in-mumbai",
+    "https://www.indeed.co.in/jobs?l=Mumbai"
+  ],
+  "government": [
+    "https://mmrda.maharashtra.gov.in",
+    "https://www.midcindia.org/home",
+    "https://www.cidco.maharashtra.gov.in"
+  ]
+}

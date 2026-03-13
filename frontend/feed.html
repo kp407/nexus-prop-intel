@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Signal Feed &mdash; NEXUS PROP INTEL</title>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<nav>
+  <span class="logo">&#x2B21; NEXUS PROP INTEL</span>
+  <a href="index.html">Dashboard</a>
+  <a href="search.html">Search</a>
+  <a href="feed.html" class="active">Signal Feed</a>
+</nav>
+<div class="container" style="padding-top:32px">
+  <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:24px">
+    <h1 style="font-size:22px;font-weight:700">Live Signal Feed</h1>
+    <div style="display:flex;gap:8px">
+      <button class="btn" style="background:#f0f0f0;color:#333" onclick="loadFeed('HIGH')">&#128308; High</button>
+      <button class="btn" style="background:#fff3cd;color:#856404" onclick="loadFeed('MEDIUM')">&#128993; Medium</button>
+      <button class="btn" onclick="loadFeed()">All</button>
+    </div>
+  </div>
+  <div id="feed-list"></div>
+</div>
+<script src="assets/app.js"></script>
+<script>
+  async function loadFeed(priority) {
+    const url = priority ? window.API_BASE+"/feed?priority="+priority+"&limit=50" : window.API_BASE+"/feed?limit=50";
+    const res = await fetch(url);
+    const data = await res.json();
+    const list = document.getElementById("feed-list");
+    list.innerHTML = "";
+    if (!data.signals.length) {
+      list.innerHTML = '<div class="card"><p style="color:var(--text-secondary)">No signals found.</p></div>';
+      return;
+    }
+    data.signals.forEach(sig => {
+      const card = document.createElement("div");
+      card.className = "card";
+      card.style.cssText = "margin-bottom:12px;cursor:pointer";
+      card.onclick = () => location.href = "dossier.html?id=" + sig.company_id;
+      card.innerHTML =
+        "<div style='display:flex;justify-content:space-between;align-items:flex-start;gap:12px'>" +
+        "<div style='flex:1'><div style='display:flex;align-items:center;gap:10px;margin-bottom:6px'>" +
+        "<span class='signal-type'>" + (sig.signal_type||'').replace(/_/g,' ') + "</span>" +
+        "<span style='font-size:12px;color:var(--text-secondary)'>" + new Date(sig.timestamp).toLocaleDateString('en-IN') + "</span></div>" +
+        "<div style='font-size:15px;font-weight:600;margin-bottom:4px'>" + (sig.companies?.company_name||'Unknown') + "</div>" +
+        "<p style='font-size:13px;color:#555;line-height:1.5'>" + (sig.summary||'').substring(0,180) + "...</p></div>" +
+        "<a href='" + sig.source_url + "' target='_blank' onclick='event.stopPropagation()' style='font-size:12px;color:var(--accent);text-decoration:none;white-space:nowrap'>Source &rarr;</a></div>";
+      list.appendChild(card);
+    });
+  }
+  loadFeed();
+</script>
+</body>
+</html>

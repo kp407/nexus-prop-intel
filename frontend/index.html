@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NEXUS ASIA PROP INTEL</title>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<nav>
+  <span class="logo">&#x2B21; NEXUS PROP INTEL</span>
+  <a href="index.html" class="active">Dashboard</a>
+  <a href="search.html">Search</a>
+  <a href="feed.html">Signal Feed</a>
+</nav>
+<div class="container" style="padding-top:32px">
+  <h1 style="font-size:22px;font-weight:700;margin-bottom:6px">Intelligence Dashboard</h1>
+  <p style="color:var(--text-secondary);font-size:14px;margin-bottom:24px">
+    Live demand signals &middot; Mumbai &amp; Navi Mumbai CRE
+  </p>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:28px">
+    <div class="card" style="text-align:center">
+      <div style="font-size:28px;font-weight:700;color:var(--accent)" id="stat-total">&mdash;</div>
+      <div style="font-size:13px;color:var(--text-secondary);margin-top:4px">Total Signals</div>
+    </div>
+    <div class="card" style="text-align:center">
+      <div style="font-size:28px;font-weight:700;color:#34c759" id="stat-high">&mdash;</div>
+      <div style="font-size:13px;color:var(--text-secondary);margin-top:4px">High Value Leads</div>
+    </div>
+    <div class="card" style="text-align:center">
+      <div style="font-size:28px;font-weight:700;color:#ff9f0a" id="stat-companies">&mdash;</div>
+      <div style="font-size:13px;color:var(--text-secondary);margin-top:4px">Companies Tracked</div>
+    </div>
+  </div>
+  <h2 style="font-size:16px;font-weight:600;margin-bottom:14px">&#128308; High Value Leads</h2>
+  <div class="grid" id="high-leads-grid">
+    <p style="color:var(--text-secondary);font-size:14px">Loading...</p>
+  </div>
+</div>
+<script src="assets/app.js"></script>
+<script>
+  async function loadDashboard() {
+    const res = await fetch(window.API_BASE + "/feed?priority=HIGH&limit=9");
+    const data = await res.json();
+    const grid = document.getElementById("high-leads-grid");
+    grid.innerHTML = "";
+    if (!data.signals.length) {
+      grid.innerHTML = '<p style="color:var(--text-secondary)">No signals yet. Run the crawler.</p>';
+      return;
+    }
+    data.signals.forEach(sig => {
+      const card = document.createElement("div");
+      card.className = "card";
+      card.style.cursor = "pointer";
+      card.onclick = () => location.href = "dossier.html?id=" + sig.company_id;
+      card.innerHTML = "<div class='signal-type'>" + sig.signal_type.replace(/_/g,' ') + "</div>" +
+        "<div style='font-size:15px;font-weight:600;margin:6px 0'>" + (sig.companies?.company_name || 'Unknown') + "</div>" +
+        "<div style='font-size:13px;color:var(--text-secondary);margin-bottom:10px'>&#128205; " + (sig.location || 'Mumbai') + "</div>" +
+        "<p style='font-size:13px;line-height:1.5;color:#333;margin-bottom:12px'>" + (sig.summary || '').substring(0,150) + "...</p>" +
+        "<a href='" + sig.source_url + "' target='_blank' style='font-size:12px;color:var(--accent);text-decoration:none'>View Source &rarr;</a>";
+      grid.appendChild(card);
+    });
+    document.getElementById("stat-total").textContent = data.signals.length;
+    document.getElementById("stat-high").textContent = data.signals.filter(s => s.confidence_score > 60).length;
+    document.getElementById("stat-companies").textContent = new Set(data.signals.map(s => s.company_id)).size;
+  }
+  loadDashboard();
+</script>
+</body>
+</html>
