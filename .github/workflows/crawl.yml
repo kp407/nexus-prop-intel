@@ -1,45 +1,30 @@
-name: Nexus Prop Intel Crawler v2
+name: Nexus Prop Intel Crawler
 
 on:
   schedule:
-    # Run every 4 hours
-    - cron: "0 */4 * * *"
-    # Extra run at 8am IST (2:30am UTC) — catches overnight BSE filings
-    - cron: "30 2 * * *"
+    - cron: "0 */6 * * *"
   workflow_dispatch:
 
 jobs:
   crawl:
     runs-on: ubuntu-latest
     timeout-minutes: 45
-
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v4
         with:
           python-version: "3.11"
-
       - name: Cache pip
         uses: actions/cache@v3
         with:
           path: ~/.cache/pip
           key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
-
       - name: Install dependencies
         run: |
           pip install -r requirements.txt
           pip install https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.7.1/en_core_web_sm-3.7.1-py3-none-any.whl
-
       - name: Run crawler pipeline
         run: python main.py
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
-
-      - name: Upload logs on failure
-        if: failure()
-        uses: actions/upload-artifact@v4
-        with:
-          name: crawler-logs
-          path: "*.log"
-          retention-days: 7
