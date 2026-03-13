@@ -1,7 +1,6 @@
 import os
 from supabase import create_client, Client
 from dotenv import load_dotenv
-
 load_dotenv()
 
 def get_client() -> Client:
@@ -20,24 +19,23 @@ def upsert_company(client: Client, company_name: str, industry: str = None,
         "website": website,
         "hq_location": hq
     }, on_conflict="normalized_name").execute()
-    
     if result.data:
         return result.data[0]["company_id"]
-    
-    # If upsert returned empty, fetch the existing row
     existing = client.table("companies").select("company_id")\
         .eq("normalized_name", normalized).execute()
     return existing.data[0]["company_id"]
 
 def insert_signal(client: Client, company_id: str, signal: dict) -> str:
+    # Accept both 'confidence' and 'confidence_score' — never break on key mismatch
+    confidence_val = signal.get("confidence") if "confidence" in signal else signal.get("confidence_score", 0)
     result = client.table("signals").insert({
-        "company_id": company_id,
-        "signal_type": signal["signal_type"],
-        "space_type": signal.get("space_type"),
-        "location": signal.get("location"),
-        "confidence_score": signal["confidence"],
-        "summary": signal.get("summary"),
-        "source_url": signal.get("source_url")
+        "company_id":       company_id,
+        "signal_type":      signal.get("signal_type"),
+        "space_type":       signal.get("space_type"),
+        "location":         signal.get("location"),
+        "confidence_score": int(confidence_val or 0),
+        "summary":          signal.get("summary"),
+        "source_url":       signal.get("source_url"),
     }).execute()
     return result.data[0]["signal_id"]
 
