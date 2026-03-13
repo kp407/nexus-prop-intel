@@ -1,5 +1,5 @@
 """
-NEXUS ASIA PROP INTEL — Main Orchestrator
+NEXUS ASIA PROP INTEL — Main Orchestrator (Debug Mode)
 """
 import json
 from crawler.rss_crawler import RSSCrawler
@@ -15,6 +15,16 @@ with open("config/sources.json") as f:
 
 def run_pipeline():
     client = get_client()
+    print("[Pipeline] Supabase client created OK")
+
+    # Test Supabase connection directly
+    try:
+        test = client.table("companies").select("company_id").limit(1).execute()
+        print(f"[Pipeline] Supabase connection OK, test query returned: {test.data}")
+    except Exception as e:
+        print(f"[Pipeline] SUPABASE CONNECTION FAILED: {e}")
+        return
+
     all_articles = []
 
     rss = RSSCrawler()
@@ -30,6 +40,8 @@ def run_pipeline():
     all_articles = deduplicate(all_articles, key="url")
     print(f"[Pipeline] Processing {len(all_articles)} unique articles")
 
+    signals_found = 0
+    signals_saved = 0
     company_signals = {}
 
     for article in all_articles:
@@ -41,6 +53,7 @@ def run_pipeline():
         if not signal:
             continue
 
+        signals_found += 1
         entities = extract_entities(text)
 
         signal["summary"] = extract_summary(text, signal["matched_phrases"])
@@ -56,13 +69,18 @@ def run_pipeline():
                 continue
             try:
                 company_id = upsert_company(client, company_name)
+                print(f"[Pipeline] Upserted company: {company_name} -> {company_id}")
                 signal_id = insert_signal(client, company_id, signal)
+                print(f"[Pipeline] Inserted signal: {signal_id}")
+                signals_saved += 1
                 if company_id not in company_signals:
                     company_signals[company_id] = []
                 company_signals[company_id].append(signal)
             except Exception as e:
-                print(f"[Pipeline] Error saving {company_name}: {e}")
+                print(f"[Pipeline] ERROR saving {company_name}: {e}")
                 continue
+
+    print(f"[Pipeline] Signals found: {signals_found}, Signals saved: {signals_saved}")
 
     for company_id, signals in company_signals.items():
         try:
