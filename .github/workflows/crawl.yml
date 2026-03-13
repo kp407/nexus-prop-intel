@@ -8,7 +8,7 @@ on:
 jobs:
   crawl:
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 15        # ← kill job if it ever hangs past 15min
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v4
