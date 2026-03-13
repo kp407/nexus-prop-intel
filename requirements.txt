@@ -11,4 +11,4 @@ pdfplumber==0.10.3
 newspaper3k==0.2.8
 lxml==4.9.4
 python-dotenv==1.0.0
-httpx==0.26.0
+httpx==0.24.1
