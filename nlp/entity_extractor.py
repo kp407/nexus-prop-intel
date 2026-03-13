@@ -13,7 +13,7 @@ def extract_entities(text: str) -> dict:
     doc = nlp(text[:100000])
     companies = list({ent.text for ent in doc.ents if ent.label_ == "ORG"})
     locations = list({ent.text for ent in doc.ents if ent.label_ in ("GPE", "LOC")})
-    mumbai_hit = any(loc in text for loc in MUMBAI_LOCATIONS)
+    mumbai_hit = True  # Pan-India scope
     return {
         "companies": companies,
         "locations": locations,
