@@ -482,6 +482,18 @@
     return 'badge-' + (map[t] || 'default');
   }
 
+  function stripHtml(html) {
+    if (!html) return '';
+    const tmp = document.createElement('div');
+    tmp.innerHTML = html;
+    return tmp.textContent || tmp.innerText || '';
+  }
+
+  function safeUrl(url) {
+    try { return new URL(url).hostname.replace('www.','').substring(0, 22); }
+    catch { return url ? url.substring(0, 22) : '—'; }
+  }
+
   function renderSignals(signals) {
     const list = document.getElementById('signals-list');
     if (!signals.length) {
@@ -489,24 +501,26 @@
       return;
     }
 
-    list.innerHTML = signals.map((s, i) => `
+    list.innerHTML = signals.map((s, i) => {
+      const summary = stripHtml(s.summary || '').trim();
+      const companyName = stripHtml(s.companies?.company_name || 'Unknown Company');
+      const location = stripHtml(s.location || '');
+      const signalType = stripHtml(s.signal_type || 'SIGNAL').toUpperCase().substring(0, 12);
+      const sourceUrl = s.source_url || '';
+      return `
       <div class="signal-row" style="animation-delay:${i * 30}ms"
-           onclick="window.open('${s.source_url || '#'}', '_blank')">
+           onclick="window.open('${sourceUrl}' || '#', '_blank')">
         <div>
           <span class="signal-type-badge ${getBadgeClass(s.signal_type)}">
-            ${(s.signal_type || 'SIGNAL').substring(0, 12)}
+            ${signalType}
           </span>
         </div>
         <div>
-          <div class="company-name">
-            ${s.companies?.company_name || 'Unknown Company'}
-          </div>
-          <div class="signal-summary">
-            ${(s.summary || 'No summary available').substring(0, 180)}
-          </div>
+          <div class="company-name">${companyName}</div>
+          <div class="signal-summary">${summary ? summary.substring(0, 200) : 'No summary available'}</div>
         </div>
         <div class="signal-location">
-          ${s.location ? '◎ ' + s.location.substring(0, 20) : '◎ India'}
+          ${location ? '◎ ' + location.substring(0, 25) : '◎ India'}
         </div>
         <div>
           <div class="confidence-bar">
@@ -517,15 +531,13 @@
           </div>
         </div>
         <div>
-          ${s.source_url
-            ? `<a class="source-link" href="${s.source_url}" target="_blank" onclick="event.stopPropagation()">
-                ${new URL(s.source_url).hostname.replace('www.','').substring(0,18)}
-               </a>`
+          ${sourceUrl
+            ? `<a class="source-link" href="${sourceUrl}" target="_blank" onclick="event.stopPropagation()">${safeUrl(sourceUrl)}</a>`
             : '<span class="source-link">—</span>'
           }
         </div>
-      </div>
-    `).join('');
+      </div>`;
+    }).join('');
 
     // Animate stat bars
     document.querySelectorAll('.stat').forEach(el => el.classList.add('loaded'));
