@@ -41,7 +41,7 @@ def run_pipeline():
         if not entities["mumbai_hit"]:
             continue
         signal = classify_signal(article)
-        if signal["signal_type"] == "NO_SIGNAL":
+        if not signal or signal["signal_type"] == "NO_SIGNAL":
             continue
         signal["summary"] = extract_summary(text, signal["matched_phrases"])
         signal["source_url"] = article.get("url", "")
