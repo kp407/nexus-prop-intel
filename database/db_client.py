@@ -20,7 +20,14 @@ def upsert_company(client: Client, company_name: str, industry: str = None,
         "website": website,
         "hq_location": hq
     }, on_conflict="normalized_name").execute()
-    return result.data[0]["company_id"]
+    
+    if result.data:
+        return result.data[0]["company_id"]
+    
+    # If upsert returned empty, fetch the existing row
+    existing = client.table("companies").select("company_id")\
+        .eq("normalized_name", normalized).execute()
+    return existing.data[0]["company_id"]
 
 def insert_signal(client: Client, company_id: str, signal: dict) -> str:
     result = client.table("signals").insert({
