@@ -1,26 +1,107 @@
 {
-   "rss_feeds": [
-    "https://economictimes.indiatimes.com/industry/services/property-/-cstruction/rssfeeds/13358259.cms",
+  "rss_feeds": [
+    "https://economictimes.indiatimes.com/industry/services/property-/-cstruction/rssfeeds/13358319.cms",
+    "https://economictimes.indiatimes.com/industry/services/retail/rssfeeds/13358316.cms",
     "https://www.business-standard.com/rss/companies-101.rss",
-    "https://inc42.com/feed/",
-    "https://timesofindia.indiatimes.com/business/india-business/rssfeedstopstories.cms",
+    "https://www.business-standard.com/rss/markets-106.rss",
     "https://www.livemint.com/rss/companies",
-    "https://www.moneycontrol.com/rss/latestnews.xml"
+    "https://www.livemint.com/rss/real-estate",
+    "https://www.moneycontrol.com/rss/business.xml",
+    "https://realty.economictimes.indiatimes.com/rss/topstories",
+    "https://housing.com/news/feed/",
+    "https://www.99acres.com/microsite/articles/feed/",
+    "https://inc42.com/feed/",
+    "https://yourstory.com/feed",
+    "https://entrackr.com/feed/"
   ],
+
   "news_portals": [
-    "https://www.99acres.com/real-estate-insights/",
-    "https://housing.com/news/",
-    "https://www.magicbricks.com/blog/",
-    "https://www.jllapsites.com/research/",
-    "https://www.knightfrank.co.in/research"
+    "https://realty.economictimes.indiatimes.com/",
+    "https://www.jll.co.in/en/newsroom",
+    "https://www.cbre.com/insights/local-insights/india",
+    "https://www.anarock.com/blog/",
+    "https://www.cushmanwakefield.com/en/india/insights",
+    "https://www.colliers.com/en-in/research"
   ],
-  "job_boards": [
-    "https://www.naukri.com/jobs-in-mumbai",
-    "https://www.indeed.co.in/jobs?l=Mumbai"
+
+  "bse_keywords": [
+    "office", "facility", "campus", "lease", "sq ft", "sqft",
+    "expansion", "relocation", "headquarters", "new premises",
+    "capex", "real estate", "property", "new location", "shift"
   ],
-  "government": [
-    "https://mmrda.maharashtra.gov.in",
-    "https://www.midcindia.org/home",
-    "https://www.cidco.maharashtra.gov.in"
+
+  "linkedin_cities": [
+    "Bengaluru", "Mumbai", "Hyderabad", "Pune", "Delhi NCR",
+    "Chennai", "Gurugram", "Noida", "Ahmedabad", "Kolkata"
+  ],
+
+  "target_companies": [
+    "Infosys", "TCS", "Wipro", "HCL Tech", "Tech Mahindra",
+    "LTIMindtree", "Cognizant", "Accenture", "IBM India",
+    "Amazon India", "Flipkart", "Meesho", "Zepto", "Swiggy", "Zomato",
+    "HDFC Bank", "ICICI Bank", "Axis Bank", "Kotak",
+    "JPMorgan", "Goldman Sachs", "Morgan Stanley", "Citi India",
+    "Google India", "Microsoft India", "Apple India", "Meta India",
+    "Razorpay", "Paytm", "PhonePe", "CRED", "BharatPe",
+    "Byju's", "upGrad", "Unacademy",
+    "Ola", "Rapido", "Porter", "Delhivery", "Ecom Express",
+    "WeWork India", "IndiQube", "Awfis", "Table Space", "BHIVE"
+  ],
+
+  "rera_portals": {
+    "maharashtra": "https://maharera.mahaonline.gov.in",
+    "karnataka": "https://rera.karnataka.gov.in",
+    "telangana": "https://rera.telangana.gov.in",
+    "delhi": "https://rera.delhi.gov.in",
+    "haryana": "https://haryanarera.gov.in",
+    "gujarat": "https://gujrera.gujarat.gov.in",
+    "tamilnadu": "https://www.tnrera.in",
+    "up": "https://www.up-rera.in"
+  },
+
+  "municipal_sources": [
+    {
+      "name": "MCGM Mumbai",
+      "url": "https://mcgm.gov.in/irj/portal/anonymous/qlstandingcommittee",
+      "type": "MUNICIPAL"
+    },
+    {
+      "name": "BBMP Bengaluru",
+      "url": "https://bbmp.gov.in/en/council-meetings",
+      "type": "MUNICIPAL"
+    },
+    {
+      "name": "HMDA Hyderabad",
+      "url": "https://www.hmda.gov.in/",
+      "type": "MUNICIPAL"
+    },
+    {
+      "name": "DTCP Haryana",
+      "url": "https://tcpharyana.gov.in/",
+      "type": "MUNICIPAL"
+    }
+  ],
+
+  "industry_bodies": [
+    {
+      "name": "NASSCOM",
+      "url": "https://nasscom.in/media-release",
+      "rss": "https://nasscom.in/rss.xml"
+    },
+    {
+      "name": "CII",
+      "url": "https://www.cii.in/PressRelease.aspx",
+      "rss": null
+    },
+    {
+      "name": "FICCI",
+      "url": "https://ficci.in/press-releases.asp",
+      "rss": null
+    },
+    {
+      "name": "CREDAI",
+      "url": "https://credai.org/press-release",
+      "rss": null
+    }
   ]
 }
