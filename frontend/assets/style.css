@@ -1,0 +1,42 @@
+:root {
+  --bg: #f9f9f7;
+  --surface: #ffffff;
+  --border: #e5e5e3;
+  --text-primary: #1a1a1a;
+  --text-secondary: #6b6b6b;
+  --accent: #0071e3;
+  --high: #34c759;
+  --medium: #ff9f0a;
+  --low: #8e8e93;
+  --radius: 12px;
+  --shadow: 0 2px 12px rgba(0,0,0,0.06);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+       background: var(--bg); color: var(--text-primary); }
+.container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+nav { background: var(--surface); border-bottom: 1px solid var(--border);
+      padding: 16px 24px; display: flex; align-items: center; gap: 32px; }
+nav a { text-decoration: none; color: var(--text-secondary); font-size: 14px; font-weight: 500; }
+nav a.active, nav a:hover { color: var(--accent); }
+.logo { font-size: 16px; font-weight: 700; color: var(--text-primary);
+        letter-spacing: -0.5px; margin-right: auto; }
+.card { background: var(--surface); border: 1px solid var(--border);
+        border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); }
+.badge { display: inline-block; padding: 3px 10px; border-radius: 20px;
+         font-size: 11px; font-weight: 600; text-transform: uppercase; }
+.badge.HIGH { background: #e3f9e5; color: #1a7f37; }
+.badge.MEDIUM { background: #fff3cd; color: #856404; }
+.badge.LOW { background: #f0f0f0; color: #555; }
+.signal-type { font-size: 12px; color: var(--accent); font-weight: 600;
+               text-transform: uppercase; letter-spacing: 0.5px; }
+input[type=text] { width: 100%; padding: 12px 18px; border: 1px solid var(--border);
+                   border-radius: var(--radius); font-size: 15px; outline: none;
+                   background: var(--surface); }
+input[type=text]:focus { border-color: var(--accent); }
+.btn { background: var(--accent); color: white; border: none; padding: 10px 22px;
+       border-radius: 8px; font-size: 14px; cursor: pointer; font-weight: 500; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px,1fr));
+        gap: 16px; margin-top: 24px; }
+@media (max-width: 600px) { .grid { grid-template-columns: 1fr; }
+  nav { flex-wrap: wrap; gap: 16px; } }

@@ -1,0 +1,89 @@
+{
+  "rss_feeds": [
+    "https://realty.economictimes.indiatimes.com/rss/topstories",
+    "https://economictimes.indiatimes.com/industry/services/property-/-cstruction/rssfeeds/13358319.cms",
+    "https://www.business-standard.com/rss/companies-101.rss",
+    "https://www.livemint.com/rss/companies",
+    "https://www.livemint.com/rss/real-estate",
+    "https://inc42.com/feed/",
+    "https://yourstory.com/feed",
+    "https://entrackr.com/feed/",
+    "https://housing.com/news/feed/",
+    "https://www.moneycontrol.com/rss/business.xml",
+    "https://www.thehindu.com/business/feeder/default.rss",
+    "https://timesofindia.indiatimes.com/rssfeeds/1898055.cms",
+    "https://www.financialexpress.com/feed/",
+    "https://vcircle.in/feed/",
+    "https://dealstreetasia.com/feed/",
+    "https://www.ndtvprofit.com/rss",
+    "https://www.vccircle.com/feed"
+  ],
+  "google_news_rss": [
+    {
+      "url": "https://news.google.com/rss/search?q=office+lease+india+sqft&hl=en-IN&gl=IN&ceid=IN:en",
+      "label": "Office Lease India"
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=GCC+global+capability+centre+india+office&hl=en-IN&gl=IN&ceid=IN:en",
+      "label": "GCC India"
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=startup+funding+mumbai+bengaluru+office+expansion&hl=en-IN&gl=IN&ceid=IN:en",
+      "label": "Startup Funding Office"
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=company+new+headquarters+india+campus&hl=en-IN&gl=IN&ceid=IN:en",
+      "label": "New HQ India"
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=india+office+relocation+commercial+real+estate&hl=en-IN&gl=IN&ceid=IN:en",
+      "label": "Office Relocation India"
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=series+B+series+C+funding+india+expansion+2025&hl=en-IN&gl=IN&ceid=IN:en",
+      "label": "Series B/C Funding"
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=foreign+company+enters+india+office+setup&hl=en-IN&gl=IN&ceid=IN:en",
+      "label": "Foreign Entry India"
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=warehouse+logistics+india+lease+sqft&hl=en-IN&gl=IN&ceid=IN:en",
+      "label": "Warehouse India"
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=india+unicorn+valuation+office+headquarters&hl=en-IN&gl=IN&ceid=IN:en",
+      "label": "Unicorn HQ"
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=mumbai+BKC+lower+parel+office+lease+deal&hl=en-IN&gl=IN&ceid=IN:en",
+      "label": "Mumbai CRE Deals"
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=bengaluru+whitefield+HITEC+office+campus+lease&hl=en-IN&gl=IN&ceid=IN:en",
+      "label": "Bengaluru CRE Deals"
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=hyderabad+pune+gurgaon+office+space+expansion&hl=en-IN&gl=IN&ceid=IN:en",
+      "label": "Other Cities CRE"
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=india+IPO+listing+office+upgrade+headquarters&hl=en-IN&gl=IN&ceid=IN:en",
+      "label": "IPO Office Upgrade"
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=BFSI+bank+insurance+new+office+india&hl=en-IN&gl=IN&ceid=IN:en",
+      "label": "BFSI Office Demand"
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=data+centre+india+facility+expansion+land&hl=en-IN&gl=IN&ceid=IN:en",
+      "label": "Data Centre India"
+    }
+  ],
+  "news_portals": [
+    "https://realty.economictimes.indiatimes.com/",
+    "https://www.jll.co.in/en/newsroom",
+    "https://www.anarock.com/blog/",
+    "https://www.colliers.com/en-in/research"
+  ]
+}

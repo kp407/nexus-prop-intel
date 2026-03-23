@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Search &mdash; NEXUS PROP INTEL</title>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<nav>
+  <span class="logo">&#x2B21; NEXUS PROP INTEL</span>
+  <a href="index.html">Dashboard</a>
+  <a href="search.html" class="active">Search</a>
+  <a href="feed.html">Signal Feed</a>
+</nav>
+<div class="container" style="padding-top:32px">
+  <h1 style="font-size:22px;font-weight:700;margin-bottom:20px">Search Intelligence</h1>
+  <div style="display:flex;gap:10px;margin-bottom:28px">
+    <input type="text" id="q" placeholder="e.g. warehouse Navi Mumbai, datacenter expansion...">
+    <button class="btn" onclick="doSearch()">Search</button>
+  </div>
+  <div id="results"></div>
+</div>
+<script src="assets/app.js"></script>
+<script>
+  async function doSearch() {
+    const q = document.getElementById("q").value.trim();
+    if (!q) return;
+    const res = await fetch(window.API_BASE + "/search?q=" + encodeURIComponent(q));
+    const data = await res.json();
+    const el = document.getElementById("results");
+    el.innerHTML = "";
+    const all = [...data.companies.map(c => ({type:"company",...c})),
+                 ...data.signals.map(s => ({type:"signal",...s}))];
+    if (!all.length) {
+      el.innerHTML = '<div class="card"><p style="color:var(--text-secondary)">NO SIGNAL FOUND</p></div>';
+      return;
+    }
+    all.forEach(r => {
+      const card = document.createElement("div");
+      card.className = "card";
+      card.style.marginBottom = "12px";
+      if (r.type === "company") {
+        card.innerHTML = "<div style='font-size:11px;text-transform:uppercase;color:var(--text-secondary);font-weight:600;margin-bottom:6px'>Company</div>" +
+          "<a href='dossier.html?id=" + r.company_id + "' style='font-size:16px;font-weight:600;color:var(--accent);text-decoration:none'>" + r.company_name + "</a>" +
+          "<p style='font-size:13px;color:var(--text-secondary);margin-top:4px'>" + (r.industry||'') + " &middot; " + (r.hq_location||'') + "</p>";
+      } else {
+        card.innerHTML = "<div class='signal-type'>" + (r.signal_type||'').replace(/_/g,' ') + "</div>" +
+          "<div style='font-size:15px;font-weight:600;margin:4px 0'>" + (r.companies?.company_name||'Unknown') + "</div>" +
+          "<p style='font-size:13px;color:#333;margin:6px 0'>" + (r.summary||'').substring(0,200) + "</p>" +
+          "<a href='" + r.source_url + "' target='_blank' style='font-size:12px;color:var(--accent);text-decoration:none'>View Source &rarr;</a>";
+      }
+      el.appendChild(card);
+    });
+  }
+  document.getElementById("q").addEventListener("keydown", e => { if (e.key==="Enter") doSearch(); });
+</script>
+</body>
+</html>

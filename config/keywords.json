@@ -1,0 +1,33 @@
+{
+  "OFFICE_EXPANSION": [
+    "opening Mumbai office", "new office Mumbai", "regional headquarters Mumbai",
+    "branch office Mumbai", "expanding India operations", "set up India HQ",
+    "new workspace Mumbai", "office space Mumbai", "leasing office Navi Mumbai",
+    "co-working Mumbai", "business centre BKC", "corporate office lower parel"
+  ],
+  "WAREHOUSE_DEMAND": [
+    "new warehouse Mumbai", "warehouse facility Navi Mumbai", "logistics hub Mumbai",
+    "fulfillment centre Mumbai", "cold storage Mumbai", "distribution centre Bhiwandi",
+    "last mile Mumbai", "dark store Mumbai", "3PL Mumbai", "storage facility Navi Mumbai"
+  ],
+  "DATACENTER_BUILD": [
+    "data center Mumbai", "datacenter investment India", "colocation Mumbai",
+    "hyperscale Mumbai", "edge datacenter", "setting up data center",
+    "server farm Mumbai", "data park Navi Mumbai", "cloud infrastructure Mumbai"
+  ],
+  "LAND_ACQUISITION": [
+    "land acquisition Mumbai", "land bank Mumbai", "greenfield Mumbai",
+    "land parcel Navi Mumbai", "MIDC land", "acquired land Maharashtra",
+    "industrial plot Navi Mumbai", "SEZ land Mumbai"
+  ],
+  "LOGISTICS_EXPANSION": [
+    "logistics expansion western India", "supply chain Mumbai",
+    "freight terminal Navi Mumbai", "JNPT logistics", "intermodal Mumbai",
+    "logistics park Bhiwandi", "cargo hub Mumbai", "APMC logistics"
+  ],
+  "CAPITAL_DEPLOYMENT": [
+    "Series B Mumbai", "raised funding India expansion", "FDI Mumbai",
+    "investment India real estate", "PE fund Mumbai", "REIT India",
+    "capital deployment western India", "growth capital Mumbai"
+  ]
+}

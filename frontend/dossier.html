@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Dossier &mdash; NEXUS PROP INTEL</title>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<nav>
+  <span class="logo">&#x2B21; NEXUS PROP INTEL</span>
+  <a href="index.html">Dashboard</a>
+  <a href="search.html">Search</a>
+  <a href="feed.html">Signal Feed</a>
+</nav>
+<div class="container" style="padding-top:32px">
+  <div id="dossier-content">Loading...</div>
+</div>
+<script src="assets/app.js"></script>
+<script>
+  const params = new URLSearchParams(location.search);
+  const companyId = params.get("id");
+  async function loadDossier() {
+    const res = await fetch(window.API_BASE + "/company/" + companyId);
+    const data = await res.json();
+    const el = document.getElementById("dossier-content");
+    const c = data.company; const score = data.lead_score;
+    el.innerHTML =
+      "<div style='display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:16px;margin-bottom:24px'>" +
+      "<div><h1 style='font-size:24px;font-weight:700'>" + c.company_name + "</h1>" +
+      "<p style='color:var(--text-secondary);font-size:14px;margin-top:4px'>" + (c.industry||'') + " &middot; " + (c.hq_location||'') + "</p></div>" +
+      "<div class='card' style='text-align:center;padding:16px 28px'>" +
+      "<div style='font-size:28px;font-weight:700;color:var(--accent)'>" + (score?.score||0) + "</div>" +
+      "<div style='font-size:12px;color:var(--text-secondary)'>Lead Score</div>" +
+      "<span class='badge " + (score?.priority_level||'LOW') + "' style='margin-top:6px'>" + (score?.priority_level||'LOW') + "</span></div></div>" +
+      "<h2 style='font-size:16px;font-weight:600;margin-bottom:14px'>Signal Timeline (" + data.signals.length + " signals)</h2>" +
+      "<div id='signal-list'></div>";
+    const list = document.getElementById("signal-list");
+    data.signals.forEach(sig => {
+      const item = document.createElement("div");
+      item.className = "card";
+      item.style.marginBottom = "12px";
+      item.innerHTML =
+        "<div style='display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:8px'>" +
+        "<span class='signal-type'>" + (sig.signal_type||'').replace(/_/g,' ') + "</span>" +
+        "<span style='font-size:12px;color:var(--text-secondary)'>" + new Date(sig.timestamp).toLocaleDateString('en-IN') + "</span></div>" +
+        "<p style='font-size:13px;line-height:1.6;color:#333;margin-bottom:10px'>" + (sig.summary||'No summary.') + "</p>" +
+        "<div style='display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px'>" +
+        "<span style='font-size:12px;color:var(--text-secondary)'>&#128205; " + (sig.location||'Mumbai') + " &nbsp;&middot;&nbsp; Confidence: " + sig.confidence_score + "%</span>" +
+        "<a href='" + sig.source_url + "' target='_blank' style='font-size:12px;color:var(--accent);text-decoration:none'>View Evidence &rarr;</a></div>";
+      list.appendChild(item);
+    });
+  }
+  if (companyId) loadDossier();
+  else document.getElementById("dossier-content").textContent = "No company selected.";
+</script>
+</body>
+</html>
